@@ -16,5 +16,6 @@ Git url : https://github.com/Antonhansel/soundcrawler
 	    if (err) console.log("Error" + err);
 	    else {
 	    	console.log(crawler.downloadURL);
+	    	console.log(crawler.title);
 	    }
 	});
