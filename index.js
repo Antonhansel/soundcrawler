@@ -3,7 +3,6 @@ var cheerio		 = require('cheerio');
 	async 		 = require('async');
 	https 		 = require('https');
 	fs			 = require('fs');
-	http 		 = require('http');
 
 var SoundCrawler = function(){
 	this.music;
@@ -25,20 +24,25 @@ SoundCrawler.prototype.download = function(url, callback){
 
 SoundCrawler.prototype.fetchFile = function(callback){
 	console.log(this.downloadURL);
-	// var file = fs.createWriteStream("./file.mp3");
-	// var options = {
-	// 	url : this.downloadURL,
-	// 	headers : {
-	// 		Accept : '*/*',
-	// 		'User-Agent' : this.useragent,
-	// 	}
-	// }
- //  var request = http.get(options, function(response) {
- //    response.pipe(file);
- //    file.on('finish', function() {
- //      file.close(cb);
- //    });
- //  });
+	var file = fs.createWriteStream("./file.mp3");
+	var options = {
+		url : this.downloadURL,
+		headers : {
+			Accept : '*/*',
+			'User-Agent' : this.useragent,
+		},
+		rejectUnauthorized : false,
+		agent : new https.Agent(options),
+	}
+	var request = https.get(options, function(response){
+		console.log(res.statusCode);
+		response.pipe(file);
+		file.on('finish', function() {
+			file.close(cb);
+		});
+	}).on('error', function(error){
+		console.log(error);
+	});
 }
 
 SoundCrawler.prototype.getUrl = function(callback){
