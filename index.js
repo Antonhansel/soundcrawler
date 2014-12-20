@@ -10,6 +10,7 @@ var SoundCrawler = function(){
 	this.downloadURL;
 	this.artist;
 	this.title;
+	this.app_version;
 	this.useragent = 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36';
 }
 
@@ -44,7 +45,7 @@ SoundCrawler.prototype.fetchFile = function(callback){
 
 SoundCrawler.prototype.getUrl = function(callback){
 	var options = {
-		url : 'https://api.soundcloud.com/i1/tracks/' + this.songId + '/streams?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&app_version=7530666',
+		url : 'https://api.soundcloud.com/i1/tracks/' + this.songId + '/streams?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&app_version=' + this.app_version,
 		headers : {
 			Accept : '*/*',
 			'User-Agent' : this.useragent,
@@ -71,6 +72,9 @@ SoundCrawler.prototype.getSongId = function(callback){
 			var $ = cheerio.load(html);
 			$('script').filter(function(i, el){
 				var data = $(el).text();
+				if (data.indexOf('window.__sc_version = "') > -1){
+					this.app_version = data.split('"')[1].split('"')[0];
+				}
 				if (data.indexOf('webpackJsonp') > -1){
 					this.songId = data.substring(data.indexOf('","id":')).split(':')[1].split(',')[0];
 					return callback();
