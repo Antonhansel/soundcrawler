@@ -8,7 +8,7 @@ Git url : https://github.com/Antonhansel/soundcrawler
 ----------
 
 	var url = 'https://soundcloud.com/aboveandbeyond/abgt109';
-	var soundcrawler = require('./index.js');
+	var soundcrawler = require('soundcrawler');
 
 	var crawler = new soundcrawler();
 	var download = true; //the second argument is optional. Pass it to true to download the file locally!
