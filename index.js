@@ -50,7 +50,7 @@ SoundCrawler.prototype.fetchFile = function(callback){
 			callback();
 		}.bind(this)).pipe(file);
 		}
-	callback();
+	else callback();
 }
 
 SoundCrawler.prototype.getUrl = function(callback){
