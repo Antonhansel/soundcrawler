@@ -12,10 +12,16 @@ var SoundCrawler = function(){
 	this.title;
 	this.jslink;
 	this.app_version;
+	this.toDownload;
 	this.useragent = 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36';
 }
 
-SoundCrawler.prototype.download = function(url, callback){
+SoundCrawler.prototype.download = function(url, download, callback){
+	if (callback === undefined){
+		callback = download
+		this.toDownload = false;
+	}
+	this.toDownload = download;
 	this.music = url.replace('https', 'http');
 	async.series({
 		songId: this.getSongDetails.bind(this),
@@ -25,24 +31,32 @@ SoundCrawler.prototype.download = function(url, callback){
 };
 
 SoundCrawler.prototype.fetchFile = function(callback){
-	var file = fs.createWriteStream("./" + this.title.replace(/\s/g, '_') + ".mp3");
-	var options = {
-		url : this.downloadURL.replace('https', 'http'),
-		headers : {
-			Accept : '*/*',
-			'User-Agent' : this.useragent,
-		},
-		encoding: null,
-		rejectUnauthorized : false,
-		agent : new http.Agent(options),
-	};
-	request.get(options, function(err, response){
-	}).on('error', function(error){
-		console.log(error);
-	}).pipe(file);
+	if (this.toDownload == true){
+		console.log("Downloading file...");
+		var file = fs.createWriteStream("./" + this.title.replace(/\s/g, '_') + ".mp3");
+		var options = {
+			url : this.downloadURL.replace('https', 'http'),
+			headers : {
+				Accept : '*/*',
+				'User-Agent' : this.useragent,
+			},
+			encoding: null,
+			rejectUnauthorized : false,
+			agent : new http.Agent(options),
+		};
+		request.get(options, function(err, response){
+		}).on('error', function(error){
+			callback(error);
+		}).on('end', function(){
+			console.log("Song downloaded: " + this.title);
+			callback();
+		}.bind(this)).pipe(file);
+		}
+	callback();
 }
 
 SoundCrawler.prototype.getUrl = function(callback){
+	console.log("Building song url...");
 	var options = {
 		url : 'https://api.soundcloud.com/i1/tracks/' + this.songId + '/streams?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&app_version=' + this.app_version,
 		headers : {
@@ -54,11 +68,12 @@ SoundCrawler.prototype.getUrl = function(callback){
 		if (!error && response.statusCode == 200){
 			this.downloadURL = JSON.parse(html).http_mp3_128_url;
 			return callback();
-		} else return callback(error, null);
+		} else return callback(error);
 	}.bind(this));
 }
 
 SoundCrawler.prototype.getSongDetails = function(callback){
+	console.log("Getting song details...");
 	var options = {
 		url : this.music,
 		headers : {
@@ -82,7 +97,7 @@ SoundCrawler.prototype.getSongDetails = function(callback){
 				}
 			}.bind(this));
 			return callback();
-		} else { return callback({error: 'Request to page failed. ' + error}, null); }
+		} else { return callback({error: 'Request to page failed. ' + error}); }
 	}.bind(this));
 }
 
