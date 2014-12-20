@@ -6,5 +6,6 @@ crawler.download(url, false,function(err){
     if (err) console.log("Error" + err);
     else {
     	console.log(crawler.downloadURL);
+    	console.log(crawler.title);
     }
 });

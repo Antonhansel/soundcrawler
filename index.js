@@ -8,9 +8,7 @@ var SoundCrawler = function(){
 	this.music;
 	this.songId;
 	this.downloadURL;
-	this.artist;
 	this.title;
-	this.jslink;
 	this.app_version;
 	this.toDownload;
 	this.useragent = 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36';
