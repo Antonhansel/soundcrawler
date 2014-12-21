@@ -25,7 +25,10 @@ SoundCrawler.prototype.download = function(url, download, callback){
 		songId: this.getSongDetails.bind(this),
 		getUrl: this.getUrl.bind(this),
 		fetchFile: this.fetchFile.bind(this),
-	}, callback);
+	}, function(err){
+		if (err) callback(err);
+		else callback();
+	});
 };
 
 SoundCrawler.prototype.fetchFile = function(callback){

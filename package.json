@@ -1,6 +1,6 @@
 {
   "name": "soundcrawler",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "description": "SoundCrawler ===================",
   "main": "index.js",
   "dependencies": {
