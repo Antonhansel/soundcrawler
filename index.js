@@ -66,6 +66,8 @@ SoundCrawler.prototype.getUrl = function(callback){
 	request(options, function(error, response, html){
 		if (!error && response.statusCode == 200){
 			this.downloadURL = JSON.parse(html).http_mp3_128_url;
+			if (this.downloadURL == undefined)
+				return (callback({'error' : 'Cannot find download url for this file yet'})); 
 			return callback();
 		} else return callback(error);
 	}.bind(this));
