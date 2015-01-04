@@ -9,6 +9,7 @@ var SoundCrawler = function(){
 	this.songId;
 	this.downloadURL;
 	this.title;
+	this.fileName;
 	this.app_version;
 	this.toDownload;
 	this.useragent = 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36';
@@ -32,10 +33,12 @@ SoundCrawler.prototype.download = function(url, download, callback){
 };
 
 SoundCrawler.prototype.fetchFile = function(callback){
-	this.title = this.title.replace(/\s/g, '_');
+	this.fileName = this.title.replace(/\s/g, '_');
+	this.fileName = this.fileName.replace(/\W/g, '');
+	console.log(this.fileName);
 	if (this.toDownload == true){
 		console.log("Downloading file...");
-		var file = fs.createWriteStream("./" + this.title + ".mp3");
+		var file = fs.createWriteStream("./" + this.fileName + ".mp3");
 		var options = {
 			url : this.downloadURL.replace('https', 'http'),
 			headers : {
