@@ -35,9 +35,7 @@ SoundCrawler.prototype.download = function(url, download, callback){
 SoundCrawler.prototype.fetchFile = function(callback){
 	this.fileName = this.title.replace(/\s/g, '_');
 	this.fileName = this.fileName.replace(/\W/g, '');
-	console.log(this.fileName);
 	if (this.toDownload == true){
-		console.log("Downloading file...");
 		var file = fs.createWriteStream("./" + this.fileName + ".mp3");
 		var options = {
 			url : this.downloadURL.replace('https', 'http'),
@@ -53,7 +51,6 @@ SoundCrawler.prototype.fetchFile = function(callback){
 		}).on('error', function(error){
 			callback(error);
 		}).on('end', function(){
-			console.log("Song downloaded: " + this.title);
 			callback();
 		}.bind(this)).pipe(file);
 		}
@@ -61,7 +58,6 @@ SoundCrawler.prototype.fetchFile = function(callback){
 }
 
 SoundCrawler.prototype.getUrl = function(callback){
-	console.log("Building song url...");
 	var options = {
 		url : 'https://api.soundcloud.com/i1/tracks/' + this.songId + '/streams?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&app_version=' + this.app_version,
 		headers : {
@@ -80,7 +76,6 @@ SoundCrawler.prototype.getUrl = function(callback){
 }
 
 SoundCrawler.prototype.getSongDetails = function(callback){
-	console.log("Getting song details...");
 	var options = {
 		url : this.music,
 		headers : {
