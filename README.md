@@ -3,6 +3,8 @@ SoundCrawler
 
 **SoundCrawler** is a npm module that can retrieve the file address of any song on SoundCloud.
 
+Test it live on [SoundCrawler.io]
+
 Git url : https://github.com/Antonhansel/soundcrawler
 
 ----------
@@ -19,3 +21,9 @@ Git url : https://github.com/Antonhansel/soundcrawler
 	    	console.log(crawler.title);
 	    }
 	});
+
+**LICENSE**
+
+MIT
+
+[SoundCrawler.io]:http://soundcrawler.io
